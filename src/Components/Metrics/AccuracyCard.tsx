@@ -1,14 +1,26 @@
-type Props = {
-  accuracy: number;
+﻿type AccuracyCardProps = {
+  label: string;
+  value: number | null;
+  helper: string;
+  tone?: 'neutral' | 'good' | 'warning';
 };
 
-export default function AccuracyCard({ accuracy }: Props) {
-  const percentage = (accuracy * 100).toFixed(2);
+function formatPercent(value: number | null) {
+  if (value === null || Number.isNaN(value)) {
+    return 'N/A';
+  }
 
+  return `${(value * 100).toFixed(1)}%`;
+}
+
+export default function AccuracyCard({ label, value, helper, tone = 'neutral' }: AccuracyCardProps) {
   return (
-    <div className="rounded-xl bg-white p-4 shadow">
-      <h2 className="text-lg font-semibold">Acuracia</h2>
-      <p className="mt-2 text-3xl font-bold">{percentage}%</p>
-    </div>
+    <article className={`metric-card tone-${tone}`}>
+      <div>
+        <span>{label}</span>
+        <strong>{formatPercent(value)}</strong>
+      </div>
+      <p>{helper}</p>
+    </article>
   );
 }

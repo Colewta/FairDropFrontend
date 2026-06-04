@@ -1,26 +1,51 @@
-import { useLocation } from 'react-router-dom';
-import type { ApiResponse } from '../types/model';
-import AccuracyCard from '../Components/Metrics/AccuracyCard';
-import DropoutChart from '../Components/Charts/DropoutChart';
+﻿import DropoutChart from '../Components/Charts/DropoutChart';
+import FeatureImportanceChart from '../Components/Charts/FeatureImportanceChart';
+import DatasetSummary from '../Components/Dashboard/DatasetSummary';
+import InsightsPanel from '../Components/Dashboard/InsightsPanel';
 import FairnessSection from '../Components/Fairness/FairnessSection';
+import MetricGrid from '../Components/Metrics/MetricGrid';
+import type { TrainingResult } from '../types/model';
 
-export default function Dashboard() {
-  const location = useLocation();
-  const data = location.state as ApiResponse;
+type DashboardProps = {
+  result: TrainingResult | null;
+};
 
-  if (!data) return <p>Sem dados</p>;
+export default function Dashboard({ result }: DashboardProps) {
+  if (!result) {
+    return (
+      <section className="empty-dashboard" aria-label="Dashboard aguardando dados">
+        <div>
+          <span className="section-kicker">Dashboard</span>
+          <h2>Aguardando a primeira analise</h2>
+          <p>Depois do treinamento, os indicadores do modelo e de fairness aparecem aqui em paineis comparaveis.</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <div className="p-6 space-y-6">
+    <section className="dashboard-shell" id="dashboard" aria-label="Resultados da analise">
+      <div className="dashboard-heading">
+        <div>
+          <span className="section-kicker">Resultados</span>
+          <h2>Desempenho preditivo e vieses detectados</h2>
+        </div>
+        <span className="model-badge">{result.modelo}</span>
+      </div>
 
-      <h1 className="text-2xl font-bold">Dashboard</h1>
+      <MetricGrid metrics={result.metricas} />
 
-      <AccuracyCard accuracy={data.accuracy} />
+      <div className="dashboard-grid two-columns">
+        <DropoutChart confusionMatrix={result.metricas.confusion_matrix} />
+        <DatasetSummary dataset={result.dataset} preprocessing={result.preprocessamento} />
+      </div>
 
-      <DropoutChart predictions={data.predictions} />
+      <div className="dashboard-grid two-columns wide-left">
+        <FairnessSection fairness={result.fairness} />
+        <InsightsPanel result={result} />
+      </div>
 
-      <FairnessSection fairness={data.fairness} />
-
-    </div>
+      <FeatureImportanceChart importances={result.feature_importance} />
+    </section>
   );
 }
