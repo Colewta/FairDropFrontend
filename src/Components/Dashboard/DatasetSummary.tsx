@@ -9,11 +9,10 @@ function formatPercent(value: number) {
   return `${(value * 100).toFixed(1)}%`;
 }
 
-export default function DatasetSummary({ dataset, preprocessing }: DatasetSummaryProps) {
+export default function DatasetSummary({ dataset }: DatasetSummaryProps) {
   const retentionRate = dataset.total_linhas > 0 ? dataset.linhas_apos_limpeza / dataset.total_linhas : 0;
   const splitTotal = dataset.treino + dataset.teste;
   const trainRate = splitTotal > 0 ? dataset.treino / splitTotal : 0;
-  const targetMapping = Object.entries(preprocessing.target_binarizado ?? {});
 
   return (
     <article className="summary-card">
@@ -28,7 +27,7 @@ export default function DatasetSummary({ dataset, preprocessing }: DatasetSummar
           <strong>{dataset.total_linhas}</strong>
         </div>
         <div>
-          <span>Apos limpeza</span>
+          <span>Após limpeza</span>
           <strong>{dataset.linhas_apos_limpeza}</strong>
         </div>
         <div>
@@ -43,7 +42,7 @@ export default function DatasetSummary({ dataset, preprocessing }: DatasetSummar
 
       <div className="progress-block">
         <div>
-          <span>Retencao de registros</span>
+          <span>Retenção de registros</span>
           <strong>{formatPercent(retentionRate)}</strong>
         </div>
         <div className="progress-track">
@@ -53,25 +52,13 @@ export default function DatasetSummary({ dataset, preprocessing }: DatasetSummar
 
       <div className="progress-block">
         <div>
-          <span>Divisao treino</span>
+          <span>Divisão treino</span>
           <strong>{formatPercent(trainRate)}</strong>
         </div>
         <div className="progress-track blue">
           <span style={{ width: `${Math.min(trainRate * 100, 100)}%` }} />
         </div>
       </div>
-
-      {targetMapping.length > 0 ? (
-        <div className="mapping-list">
-          <span>Mapeamento do target</span>
-          {targetMapping.map(([label, value]) => (
-            <div key={label}>
-              <strong>{label}</strong>
-              <em>{value}</em>
-            </div>
-          ))}
-        </div>
-      ) : null}
     </article>
   );
 }

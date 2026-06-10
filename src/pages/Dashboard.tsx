@@ -16,8 +16,8 @@ export default function Dashboard({ result }: DashboardProps) {
       <section className="empty-dashboard" aria-label="Dashboard aguardando dados">
         <div>
           <span className="section-kicker">Dashboard</span>
-          <h2>Aguardando a primeira analise</h2>
-          <p>Depois do treinamento, os indicadores do modelo e de fairness aparecem aqui em paineis comparaveis.</p>
+          <h2>Aguardando a primeira análise</h2>
+          <p>Depois do treinamento, os indicadores do modelo e de fairness aparecem aqui em painéis comparáveis.</p>
         </div>
       </section>
     );

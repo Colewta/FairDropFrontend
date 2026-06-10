@@ -43,7 +43,7 @@ const FAIRNESS_META: Record<FairnessKey, FairnessMeta> = {
 
 function getStatus(meta: FairnessMeta, value: number | null) {
   if (value === null || Number.isNaN(value)) {
-    return { label: 'Indisponivel', tone: 'neutral' };
+    return { label: 'Indisponível', tone: 'neutral' };
   }
 
   if (meta.mode === 'one') {
@@ -52,10 +52,10 @@ function getStatus(meta: FairnessMeta, value: number | null) {
     }
 
     if (value >= 0.65 && value <= 1.5) {
-      return { label: 'Atencao', tone: 'warning' };
+      return { label: 'Atenção', tone: 'warning' };
     }
 
-    return { label: 'Critico', tone: 'danger' };
+    return { label: 'Crítico', tone: 'danger' };
   }
 
   const distance = Math.abs(value);
@@ -65,10 +65,10 @@ function getStatus(meta: FairnessMeta, value: number | null) {
   }
 
   if (distance <= 0.2) {
-    return { label: 'Atencao', tone: 'warning' };
+    return { label: 'Atenção', tone: 'warning' };
   }
 
-  return { label: 'Critico', tone: 'danger' };
+  return { label: 'Crítico', tone: 'danger' };
 }
 
 function formatFairnessValue(value: number | null) {
@@ -101,7 +101,7 @@ export default function FairnessSection({ fairness }: FairnessSectionProps) {
     <article className="chart-card fairness-card">
       <div className="card-heading">
         <span className="section-kicker">Fairness</span>
-        <h3>Metricas de vies em grupos sensiveis</h3>
+        <h3>Métricas de viés em grupos sensíveis</h3>
       </div>
 
       <div className="chart-frame small">

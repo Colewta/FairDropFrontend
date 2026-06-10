@@ -24,8 +24,8 @@ export default function DropoutChart({ confusionMatrix }: DropoutChartProps) {
   return (
     <article className="chart-card">
       <div className="card-heading">
-        <span className="section-kicker">Matriz de confusao</span>
-        <h3>Distribuicao de classes</h3>
+        <span className="section-kicker">Matriz de confusão</span>
+        <h3>Distribuição de classes</h3>
       </div>
 
       <div className="chart-frame">
@@ -43,11 +43,11 @@ export default function DropoutChart({ confusionMatrix }: DropoutChartProps) {
       <div className="confusion-matrix" aria-label="Matriz de confusao detalhada">
         <span />
         <strong>Previsto ativo</strong>
-        <strong>Previsto evasao</strong>
+        <strong>Previsto evasão</strong>
         <strong>Real ativo</strong>
         <span>{trueNegative}</span>
         <span>{falsePositive}</span>
-        <strong>Real evasao</strong>
+        <strong>Real evasão</strong>
         <span>{falseNegative}</span>
         <span>{truePositive}</span>
       </div>

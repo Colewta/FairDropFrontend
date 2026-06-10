@@ -24,11 +24,11 @@ function getTone(value: number | null) {
 export default function MetricGrid({ metrics }: MetricGridProps) {
   return (
     <div className="metric-grid">
-      <AccuracyCard label="Acuracia" value={metrics.accuracy} helper="Acertos gerais no conjunto de teste" tone={getTone(metrics.accuracy)} />
-      <AccuracyCard label="Precisao" value={metrics.precision} helper="Confiabilidade entre alertas de evasao" tone={getTone(metrics.precision)} />
+      <AccuracyCard label="Acurácia" value={metrics.accuracy} helper="Acertos gerais no conjunto de teste" tone={getTone(metrics.accuracy)} />
+      <AccuracyCard label="Precisão" value={metrics.precision} helper="Confiabilidade entre alertas de evasão" tone={getTone(metrics.precision)} />
       <AccuracyCard label="Recall" value={metrics.recall} helper="Capacidade de encontrar estudantes em risco" tone={getTone(metrics.recall)} />
-      <AccuracyCard label="F1-score" value={metrics.f1} helper="Equilibrio entre precisao e recall" tone={getTone(metrics.f1)} />
-      <AccuracyCard label="ROC AUC" value={metrics.roc_auc} helper="Separacao entre classes quando disponivel" tone={getTone(metrics.roc_auc)} />
+      <AccuracyCard label="F1-score" value={metrics.f1} helper="Equilíbrio entre precisão e recall" tone={getTone(metrics.f1)} />
+      <AccuracyCard label="ROC AUC" value={metrics.roc_auc} helper="Separação entre classes quando disponível" tone={getTone(metrics.roc_auc)} />
     </div>
   );
 }

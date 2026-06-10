@@ -53,21 +53,21 @@ export const MODEL_OPTIONS: ModelOption[] = [
   {
     value: 'rf',
     label: 'Random Forest',
-    description: 'Bom equilibrio para dados tabulares e importancia de variaveis.',
+    description: 'Bom equilíbrio para dados tabulares e importância de variáveis.'
   },
   {
     value: 'logistic',
-    label: 'Regressao Logistica',
-    description: 'Modelo interpretavel para linha de base academica.',
+    label: 'Regressão Logística',
+    description: 'Modelo interpretável para linha de base acadêmica.'
   },
   {
     value: 'knn',
     label: 'KNN',
-    description: 'Compara estudantes por proximidade entre caracteristicas.',
+    description: 'Compara estudantes por proximidade entre características.'
   },
   {
     value: 'xgboost',
     label: 'XGBoost',
-    description: 'Modelo robusto para capturar relacoes nao lineares.',
-  },
+    description: 'Modelo robusto para capturar relações não lineares.'
+  }
 ];

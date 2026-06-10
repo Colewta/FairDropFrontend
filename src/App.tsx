@@ -2,7 +2,7 @@
 import './App.css';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
-import { API_BASE_URL, getApiErrorMessage, trainModel } from './services/api';
+import { getApiErrorMessage, trainModel } from './services/api';
 import type { TrainingFormData, TrainingResult } from './types/model';
 
 function App() {
@@ -21,9 +21,11 @@ function App() {
       window.setTimeout(() => {
         document.getElementById('dashboard')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 80);
-    } catch (requestError) {
+    }
+    catch (requestError) {
       setError(getApiErrorMessage(requestError));
-    } finally {
+    }
+    finally {
       setIsTraining(false);
     }
   }
@@ -33,16 +35,7 @@ function App() {
       <header className="topbar">
         <div>
           <span className="product-mark">FairDrop</span>
-          <h1>Avaliacao de evasao academica com metricas de desempenho e fairness</h1>
-          <p>
-            Ambiente de analise para comparar algoritmos de aprendizado de maquina, observar vieses em
-            grupos sensiveis e apoiar a discussao experimental do TCC.
-          </p>
-        </div>
-
-        <div className="api-status" aria-label="Endereco da API conectada">
-          <span>API</span>
-          <strong>{API_BASE_URL}</strong>
+          <h1>Avaliação de equidade de algoritmo (Fairness)</h1>
         </div>
       </header>
 

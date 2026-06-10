@@ -10,7 +10,7 @@ type HomeProps = {
 
 function formatModelName(model: string) {
   const names: Record<string, string> = {
-    logistic: 'Regressao Logistica',
+    logistic: 'Regressão Logística',
     rf: 'Random Forest',
     knn: 'KNN',
     xgboost: 'XGBoost',
@@ -28,11 +28,11 @@ export default function Home({ onTrain, isTraining, error, result }: HomeProps) 
       <aside className="research-panel">
         <div className="panel-block">
           <span className="section-kicker">Experimento</span>
-          <h2>Pipeline preparado para avaliacao academica</h2>
+          <h2>Pipeline preparado para avaliação acadêmica</h2>
           <p>
-            O frontend envia o CSV, a coluna alvo, o atributo sensivel e o algoritmo escolhido para o endpoint
-            de treinamento. A resposta alimenta automaticamente os graficos de desempenho, matriz de confusao,
-            fairness e importancia de variaveis.
+            O usuário envia o CSV, a coluna alvo, o atributo sensível e o algoritmo escolhido para a execução
+            do treinamento. A resposta alimenta automaticamente os gráficos de desempenho, matriz de confusão,
+            fairness e importância de variáveis.
           </p>
         </div>
 
@@ -40,32 +40,37 @@ export default function Home({ onTrain, isTraining, error, result }: HomeProps) 
           <div className="pipeline-item is-active">
             <span>01</span>
             <strong>Dataset</strong>
-            <p>Leitura do CSV e selecao das colunas de estudo.</p>
+            <p>Leitura do CSV e seleção das colunas de estudo.</p>
           </div>
           <div className="pipeline-item is-active">
             <span>02</span>
-            <strong>Modelo</strong>
-            <p>Treinamento supervisionado para prever evasao.</p>
+            <strong>Pré-processamento</strong>
+            <p>Limpeza dos dados para remoção de duplicidades e outros problemas.</p>
           </div>
-          <div className="pipeline-item">
+          <div className="pipeline-item is-active">
             <span>03</span>
-            <strong>Fairness</strong>
-            <p>Calculo das metricas para grupos privilegiados e nao privilegiados.</p>
+            <strong>Modelo</strong>
+            <p>Treinamento supervisionado para prever evasão.</p>
           </div>
           <div className="pipeline-item">
             <span>04</span>
-            <strong>Analise</strong>
-            <p>Leitura visual dos resultados para comparacao no TCC.</p>
+            <strong>Fairness</strong>
+            <p>Cálculo das métricas para grupos privilegiados e não privilegiados.</p>
+          </div>
+          <div className="pipeline-item">
+            <span>05</span>
+            <strong>Análise</strong>
+            <p>Leitura visual dos resultados para comparação das métricas.</p>
           </div>
         </div>
 
         {result ? (
           <div className="last-run-card">
-            <span className="section-kicker">Ultima analise</span>
+            <span className="section-kicker">Última análise</span>
             <strong>{formatModelName(result.modelo)}</strong>
             <div className="last-run-grid">
-              <span>{result.dataset.linhas_apos_limpeza} registros validos</span>
-              <span>{(result.metricas.accuracy * 100).toFixed(1)}% acuracia</span>
+              <span>{result.dataset.linhas_apos_limpeza} registros válidos</span>
+              <span>{(result.metricas.accuracy * 100).toFixed(1)}% acurácia</span>
             </div>
           </div>
         ) : null}
