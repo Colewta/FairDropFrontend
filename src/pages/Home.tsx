@@ -1,76 +1,91 @@
-﻿import UploadData from './UploadData';
-import type { TrainingFormData, TrainingResult } from '../types/model';
+import UploadData from '../Components/Upload/UploadCSV';
+import type { AnalyzeResult, TrainingFormData, TrainingResult } from '../types/model';
+import { formatModelName } from '../types/model';
 
 type HomeProps = {
+  analysis: AnalyzeResult | null;
+  onAnalyze: (file: File) => Promise<void>;
   onTrain: (data: TrainingFormData) => Promise<void>;
+  isAnalyzing: boolean;
   isTraining: boolean;
   error: string | null;
   result: TrainingResult | null;
 };
 
-function formatModelName(model: string) {
-  const names: Record<string, string> = {
-    logistic: 'Regressão Logística',
-    rf: 'Random Forest',
-    knn: 'KNN',
-    xgboost: 'XGBoost',
-    xgb: 'XGBoost',
-  };
+export default function Home({
+  analysis,
+  onAnalyze,
+  onTrain,
+  isAnalyzing,
+  isTraining,
+  error,
+  result,
+}: HomeProps) {
+  const bestAccuracy = result?.comparativo_modelos.melhor_acuracia;
+  const bestFairness = result?.comparativo_modelos.melhor_fairness;
 
-  return names[model] ?? model;
-}
-
-export default function Home({ onTrain, isTraining, error, result }: HomeProps) {
   return (
-    <section className="workspace-grid" aria-label="Configuracao da analise">
-      <UploadData onTrain={onTrain} isTraining={isTraining} error={error} />
+    <section className="workspace-grid" aria-label="Configuração da análise">
+      <UploadData
+        analysis={analysis}
+        onAnalyze={onAnalyze}
+        onTrain={onTrain}
+        isAnalyzing={isAnalyzing}
+        isTraining={isTraining}
+        error={error}
+      />
 
       <aside className="research-panel">
         <div className="panel-block">
           <span className="section-kicker">Experimento</span>
-          <h2>Pipeline preparado para avaliação acadêmica</h2>
+          <h2>Pipeline guiado para comparar performance e fairness</h2>
           <p>
-            O usuário envia o CSV, a coluna alvo, o atributo sensível e o algoritmo escolhido para a execução
-            do treinamento. A resposta alimenta automaticamente os gráficos de desempenho, matriz de confusão,
-            fairness e importância de variáveis.
+            Primeiro o backend lê o CSV e sugere colunas candidatas para target e sensitive. Depois do ajuste
+            do usuário, os quatro modelos são treinados automaticamente para facilitar a comparação final.
           </p>
         </div>
 
         <div className="pipeline-list" aria-label="Etapas do experimento">
-          <div className="pipeline-item is-active">
+          <div className={analysis ? 'pipeline-item is-active' : 'pipeline-item'}>
             <span>01</span>
-            <strong>Dataset</strong>
-            <p>Leitura do CSV e seleção das colunas de estudo.</p>
+            <strong>Leitura do dataset</strong>
+            <p>Upload do CSV com diagnóstico inicial da quantidade de linhas, colunas e problemas detectados.</p>
           </div>
-          <div className="pipeline-item is-active">
+          <div className={analysis ? 'pipeline-item is-active' : 'pipeline-item'}>
             <span>02</span>
-            <strong>Pré-processamento</strong>
-            <p>Limpeza dos dados para remoção de duplicidades e outros problemas.</p>
+            <strong>Recomendação assistida</strong>
+            <p>O sistema sugere target e sensitive com base no nome das colunas e nos padrões dos valores.</p>
           </div>
-          <div className="pipeline-item is-active">
+          <div className={result ? 'pipeline-item is-active' : 'pipeline-item'}>
             <span>03</span>
-            <strong>Modelo</strong>
-            <p>Treinamento supervisionado para prever evasão.</p>
+            <strong>Pré-processamento</strong>
+            <p>Limpeza, binarização, imputação e preparação das features antes da divisão treino e teste.</p>
           </div>
-          <div className="pipeline-item">
+          <div className={result ? 'pipeline-item is-active' : 'pipeline-item'}>
             <span>04</span>
-            <strong>Fairness</strong>
-            <p>Cálculo das métricas para grupos privilegiados e não privilegiados.</p>
+            <strong>Treino dos 4 modelos</strong>
+            <p>Logistic Regression, Random Forest, KNN e XGBoost são executados no mesmo conjunto.</p>
           </div>
-          <div className="pipeline-item">
+          <div className={result ? 'pipeline-item is-active' : 'pipeline-item'}>
             <span>05</span>
-            <strong>Análise</strong>
-            <p>Leitura visual dos resultados para comparação das métricas.</p>
+            <strong>Leitura crítica</strong>
+            <p>O dashboard mostra quem foi mais preciso, quem foi mais justo e onde o fairness exige atenção.</p>
           </div>
         </div>
 
         {result ? (
           <div className="last-run-card">
             <span className="section-kicker">Última análise</span>
-            <strong>{formatModelName(result.modelo)}</strong>
+            <strong>{formatModelName(result.modelo_principal.tipo)}</strong>
             <div className="last-run-grid">
-              <span>{result.dataset.linhas_apos_limpeza} registros válidos</span>
-              <span>{(result.metricas.accuracy * 100).toFixed(1)}% acurácia</span>
+              <span>{result.dataset.linhas_finais} registros prontos para modelagem</span>
+              <span>{(result.metricas.accuracy * 100).toFixed(1)}% de acurácia no modelo principal</span>
+              <span>
+                Melhor acurácia: {bestAccuracy ? `${bestAccuracy.nome} (${(bestAccuracy.valor * 100).toFixed(1)}%)` : 'N/A'}
+              </span>
+              <span>
+                Melhor fairness: {bestFairness ? `${bestFairness.nome} (${(bestFairness.valor * 100).toFixed(1)}%)` : 'N/A'}
+              </span>
             </div>
           </div>
         ) : null}

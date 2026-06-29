@@ -1,4 +1,4 @@
-﻿import type { DatasetSummary as DatasetSummaryType, PreprocessingSummary } from '../../types/model';
+import type { DatasetSummary as DatasetSummaryType, PreprocessingSummary } from '../../types/model';
 
 type DatasetSummaryProps = {
   dataset: DatasetSummaryType;
@@ -9,8 +9,8 @@ function formatPercent(value: number) {
   return `${(value * 100).toFixed(1)}%`;
 }
 
-export default function DatasetSummary({ dataset }: DatasetSummaryProps) {
-  const retentionRate = dataset.total_linhas > 0 ? dataset.linhas_apos_limpeza / dataset.total_linhas : 0;
+export default function DatasetSummary({ dataset, preprocessing }: DatasetSummaryProps) {
+  const retentionRate = dataset.total_linhas > 0 ? dataset.linhas_finais / dataset.total_linhas : 0;
   const splitTotal = dataset.treino + dataset.teste;
   const trainRate = splitTotal > 0 ? dataset.treino / splitTotal : 0;
 
@@ -23,20 +23,20 @@ export default function DatasetSummary({ dataset }: DatasetSummaryProps) {
 
       <div className="summary-grid">
         <div>
-          <span>Total</span>
+          <span>Total de linhas</span>
           <strong>{dataset.total_linhas}</strong>
         </div>
         <div>
-          <span>Após limpeza</span>
-          <strong>{dataset.linhas_apos_limpeza}</strong>
+          <span>Linhas finais</span>
+          <strong>{dataset.linhas_finais}</strong>
         </div>
         <div>
-          <span>Treino</span>
-          <strong>{dataset.treino}</strong>
+          <span>Features originais</span>
+          <strong>{dataset.features_originais}</strong>
         </div>
         <div>
-          <span>Teste</span>
-          <strong>{dataset.teste}</strong>
+          <span>Features do modelo</span>
+          <strong>{dataset.features_modelo}</strong>
         </div>
       </div>
 
@@ -52,11 +52,35 @@ export default function DatasetSummary({ dataset }: DatasetSummaryProps) {
 
       <div className="progress-block">
         <div>
-          <span>Divisão treino</span>
+          <span>Divisão de treino</span>
           <strong>{formatPercent(trainRate)}</strong>
         </div>
         <div className="progress-track blue">
           <span style={{ width: `${Math.min(trainRate * 100, 100)}%` }} />
+        </div>
+      </div>
+
+      <div className="mapping-list">
+        <span>Leitura do preprocessamento</span>
+        <div>
+          <strong>Target positivo</strong>
+          <em>{preprocessing.target_classe_positiva ?? 'N/A'}</em>
+        </div>
+        <div>
+          <strong>Grupo privilegiado</strong>
+          <em>{preprocessing.sensitive_grupo_privilegiado ?? 'N/A'}</em>
+        </div>
+        <div>
+          <strong>Valores ausentes preenchidos</strong>
+          <em>{preprocessing.valores_ausentes_preenchidos}</em>
+        </div>
+        <div>
+          <strong>Descartados por target nulo</strong>
+          <em>{preprocessing.linhas_descartadas_target_nulo + preprocessing.linhas_descartadas_target_invalido}</em>
+        </div>
+        <div>
+          <strong>Descartados por sensitive nulo</strong>
+          <em>{preprocessing.linhas_descartadas_sensitive_nulo}</em>
         </div>
       </div>
     </article>
