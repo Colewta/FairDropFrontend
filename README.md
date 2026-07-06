@@ -1,73 +1,90 @@
-# React + TypeScript + Vite
+# FairDrop Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interface web do FairDrop para envio de datasets em CSV, configuração da análise e visualização dos resultados de desempenho preditivo e fairness retornados pela API.
 
-Currently, two official plugins are available:
+## Visão Geral
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+O frontend deve ser executado localmente com Node.js, sem Docker. Essa separação faz parte da estrutura atual do projeto:
 
-## React Compiler
+- backend em Docker;
+- frontend local com `npm install` e `npm run dev`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Em ambiente de desenvolvimento, a aplicação espera que o backend esteja disponível em `http://localhost:8000`.
 
-## Expanding the ESLint configuration
+## Pré-requisitos
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js 18 ou superior (`https://nodejs.org/en/download`)
+- npm
+- backend do projeto em execução
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Como Executar
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+No diretório `FairDropFrontend`, execute:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Em seguida:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Após a inicialização, o Vite exibirá a URL local da aplicação, normalmente:
+
+- `http://localhost:5173`
+
+## Integração com o Backend
+
+O fluxo correto para desenvolvimento local é:
+
+1. subir o backend via Docker na pasta `Backend`;
+2. iniciar o frontend localmente na pasta `Frontend`.
+
+Por padrão, o frontend usa:
+
+- `http://localhost:8000` em desenvolvimento;
+- `/api` em cenários de build/produção, caso seja configurado um proxy ou servidor intermediário.
+
+## Variáveis de Ambiente
+
+Opcionalmente, é possível definir a URL da API manualmente com a variável:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+Se essa variável não for informada, o projeto já utiliza `http://localhost:8000` automaticamente durante o desenvolvimento.
+
+## Scripts Disponíveis
+
+Executar ambiente de desenvolvimento:
+
+```bash
+npm run dev
+```
+
+Gerar build de produção:
+
+```bash
+npm run build
+```
+
+Executar validação com ESLint:
+
+```bash
+npm run lint
+```
+
+Visualizar a build localmente:
+
+```bash
+npm run preview
+```
+
+## Observações
+
+- Sempre execute os comandos a partir da pasta `FairDropFrontend`.
+- O frontend depende do backend ativo para realizar análise de datasets e treinamento dos modelos.
+- Caso a API esteja em outro endereço, ajuste `VITE_API_URL` antes de iniciar o servidor de desenvolvimento.
